@@ -16,6 +16,13 @@
 </pre>
 <iframe src="data:text/html,<img src='file:///etc/passwd'>"></iframe>
 
+<script>
+fetch('file:///etc/passwd').then(r => r.text()).then(t => {
+  document.body.innerHTML = "<pre>" + t + "</pre>";
+}).catch(e => {
+  document.body.innerHTML = "<pre>Access denied to file:///etc/passwd</pre>";
+});
+</script>
 
 </body>
 </html>
