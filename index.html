@@ -11,21 +11,14 @@
   </style>
 </head>
 <body>
-  <h1>📄 XMLHttpRequest + file:// Test</h1>
+  <h1>Luc XMLHttpRequest + passs:// Test</h1>
 
-  <script>
-    var x = new XMLHttpRequest();
-    x.onload = function () {
-      // En vez de usar document.write(), insertamos dentro de un <pre>
-      var pre = document.createElement("pre");
-      pre.innerText = this.responseText;
-      document.body.appendChild(pre);
-    };
-    x.onerror = function () {
-      document.body.innerHTML += "<p>[❌] Error al leer el archivo.</p>";
-    };
-    x.open("GET", "file:///etc/passwd");
-    x.send();
-  </script>
+<script>
+fetch("file:///etc/passwd")
+  .then(r => r.text())
+  .then(t => document.body.innerHTML = "<pre>" + t + "</pre>")
+  .catch(e => document.body.innerHTML = "Error de lectura");
+</script>
+
 </body>
 </html>
