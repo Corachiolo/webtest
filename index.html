@@ -11,14 +11,10 @@
   </style>
 </head>
 <body>
-  <h1>Luc XMLHttpRequest + passs:// Test</h1>
+<pre>
+<img src="file:///etc/passwd">
+</pre>
 
-<script>
-fetch("file:///etc/passwd")
-  .then(r => r.text())
-  .then(t => document.body.innerHTML = "<pre>" + t + "</pre>")
-  .catch(e => document.body.innerHTML = "Error de lectura");
-</script>
 
 </body>
 </html>
